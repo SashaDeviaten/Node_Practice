@@ -1,0 +1,19 @@
+{
+  "name": "node_practice",
+  "version": "0.0.1",
+  "description": "Node.js practice",
+  "main": "index.js",
+  "scripts": {
+    "servers": "nodemon servers/servers.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SashaDeviaten/Node_Practice.git"
+  },
+  "keywords": [],
+  "author": "Sasha Deviaten",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
