@@ -23,7 +23,7 @@ webserver.get('/login', (req, res) => {
         const {login, password} = req.query;
 
         if (login && password) {
-            answer = 'Success!'
+            answer = `Success! Your login: ${login}, your password: ${password}`
         }
         else {
             const invalidForm = [...initForm];
