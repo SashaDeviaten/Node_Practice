@@ -1,0 +1,17 @@
+label {
+    display: block;
+}
+button {
+    margin-top: 16px;
+}
+
+.info {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    padding: 6px;
+    background-color: blanchedalmond;
+    border: 1px solid;
+    border-radius: 4px;
+    opacity: 0;
+}
