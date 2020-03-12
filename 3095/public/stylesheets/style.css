@@ -15,3 +15,17 @@ button {
     border-radius: 4px;
     opacity: 0;
 }
+
+h5 {
+    margin-bottom: 8px;
+
+}
+
+button.action {
+    margin: 0 2px 8px;
+}
+
+textarea {
+    width: 300px;
+    height: 150px;
+}

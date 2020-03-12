@@ -69,7 +69,7 @@ webserver.post('/vote', (req, res) => {
     }
 });
 
-webserver.post('/stat', (req, res) => {
+webserver.get('/stat', (req, res) => {
     const dataJson = fs.readFileSync(
         dataFile,
         e => {
@@ -79,11 +79,49 @@ webserver.post('/stat', (req, res) => {
             }
         }
     );
+    res.setHeader("Cache-Control","max-age=0");
+
+    let data = null;
+
+    const clientAccept=req.headers.accept;
+    if ( clientAccept==="application/json" ) {
+        res.setHeader("Content-Type", "application/json");
+        data = dataJson;
+    }
+    else if ( clientAccept==="application/xml" ) {
+        res.setHeader("Content-Type", "application/xml");
+        data = getXMLData(JSON.parse(dataJson));
+    }
+    else {
+        res.setHeader("Content-Type", "application/html");
+        data=getHTMLData(JSON.parse(dataJson));
+    }
+
     logLineSync(`Success web server /stat on port ${port}`, __dirname);
-    res.send(200, dataJson)
+    res.send(200, data)
 });
 
 
 webserver.listen(port,()=>{
     console.log("web server running on port "+port, __dirname);
-}); 
+});
+
+function getXMLData(data) {
+    let xml = '';
+
+    for (let key in data) {
+        xml += `<variant> <id>${key}</id> <text>${data[key].text}</text> <votes>${data[key].votes}</votes> </variant>`
+    }
+
+    return `<statistic> ${xml} </statistic>`
+}
+
+function getHTMLData(data) {
+    let html = '';
+
+    for (let key in data) {
+        html += `<div>${data[key].text}: ${data[key].votes}</div>\n\t`
+    }
+
+    return html
+}

@@ -4,20 +4,33 @@ const currentOption = {
     id: null
 };
 
+let fileView = null;
+
+const JSON_TYPE = 'json';
+
 function load() {
     getVariants();
-    getResults();
+    setResults();
+    setActions();
+    fileView = document.getElementById('fileView')
 }
 
-async function getResults() {
+async function setResults() {
+    const result = await getResults();
+    buildStatisticSection(result)
+}
+
+async function getResults(type = JSON_TYPE) {
     const response = await fetch('/stat', {
-        method: 'POST',
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
+            'Accept': `application/${type}`
+        }
     });
-    const statistic = await response.json();
-    buildStatisticSection(statistic)
+
+    const result = await type === JSON_TYPE ? response.json() : response.text();
+
+    return result
 }
 
 async function getVariants() {
@@ -83,7 +96,7 @@ async function vote() {
         body: JSON.stringify(currentOption)
     });
     setOptionId(null);
-    getResults();
+    setResults();
     resetInputs();
     showInfo('Ваш голос принят')
 
@@ -106,4 +119,17 @@ function showInfo(text) {
         section.innerText = '';
         section.style.opacity = 0
     }, 2500)
+}
+
+function setActions() {
+    const actionList = document.querySelectorAll('button.action');
+    const actionsArr = Array.from(actionList);
+
+    actionsArr.forEach(action => action.addEventListener('click', getStatistic))
+}
+
+async function getStatistic(e) {
+    const type = e.target.name;
+    const data = await getResults(type);
+    fileView.innerText = type === JSON_TYPE ? JSON.stringify(data) : data
 }
