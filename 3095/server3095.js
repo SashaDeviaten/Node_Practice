@@ -12,30 +12,6 @@ webserver.use(express.static('public'));
 
 webserver.use(express.json({extended:true}));
 
-const data  = fs.readFileSync(
-    dataFile,
-    e => {
-        if (e)
-            logLineSync(`Error web server on port ${port}: ${e}`, __dirname)
-    }
-);
-
-const variants = JSON.parse(data);
-
-const options = [];
-
-for (let key in variants) {
-    options.push({
-        id: key,
-        text: variants[key].text
-    })
-}
-
-
-webserver.get('/variants', (req, res) => {
-    res.json(options);
-});
-
 webserver.post('/vote', (req, res) => {
     const id = req.body.id;
     if (id) {

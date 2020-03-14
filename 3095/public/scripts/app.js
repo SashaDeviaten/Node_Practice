@@ -9,16 +9,17 @@ let fileView = null;
 const JSON_TYPE = 'json';
 
 function load() {
-    getVariants();
-    setResults();
+    buildData(true);
     setActions();
     fileView = document.getElementById('fileView')
 }
 
-async function setResults() {
+async function buildData(initial) {
     const result = await getResults();
-    buildStatisticSection(result)
+    buildStatisticSection(result);
+    if (initial) setVariants(result);
 }
+
 
 async function getResults(type = JSON_TYPE) {
     const response = await fetch('/stat', {
@@ -33,9 +34,17 @@ async function getResults(type = JSON_TYPE) {
     return result
 }
 
-async function getVariants() {
-    const response = await fetch('/variants');
-    const options = await response.json();
+async function setVariants(variants) {
+
+    const options = [];
+
+    for (let key in variants) {
+        options.push({
+            id: key,
+            text: variants[key].text
+        })
+    }
+
     buildVariantsSection(options)
 }
 
@@ -96,7 +105,7 @@ async function vote() {
         body: JSON.stringify(currentOption)
     });
     setOptionId(null);
-    setResults();
+    buildData();
     resetInputs();
     showInfo('Ваш голос принят')
 
