@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const {logLineSync} = require("../utils/logLineSync");
+const {logLineSync} = require("../utils/log");
 
 const webserver = express();
 const port = 3095;
