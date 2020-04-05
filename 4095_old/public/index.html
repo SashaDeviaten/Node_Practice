@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="stylesheets/style.css">
 </head>
 <body>
-    <h2>Request</h2>
     <div class="container">
         <div class="row">
             <div class="label">Name:</div>
@@ -35,25 +34,25 @@
             </div>
         </div>
         <h3>Headers</h3>
-        <div class="row tableHeader">
-            <div class="label">Key</div>
-            <div>Value</div>
-        </div>
-        <div id="headersContainer"></div>
+        <div id="headers"></div>
         <button type="button" name="addHeader">Add header</button>
         <h3>Params</h3>
-        <div class="row tableHeader">
-            <div class="label">Key</div>
-            <div>Value</div>
-        </div>
-        <div id="paramsContainer"></div>
+        <div id="params"></div>
         <button type="button" name="addParam">Add param</button>
         <h3>Body</h3>
-        <textarea class="reqBody"></textarea>
+        <div class="radioWrap">
+            <input type="radio" name="dataType" value="row" id="row">
+            <label for="row">row</label>
+            <input type="radio" name="dataType" value="x-www-form-urlencoded" id="x-www-form-urlencoded">
+            <label for="x-www-form-urlencoded">x-www-form-urlencoded</label>
+            <input type="radio" name="dataType" value="form-data" id="form-data">
+            <label for="form-data">form-data</label>
+        </div>
+        <!--<textarea class="reqBody" name="body"></textarea>-->
         <div class="actions">
+            <button type="button" name="reset">Reset</button>
             <button type="button" name="save">Save</button>
             <button type="button" name="send">Send</button>
-            <button type="button" name="sendSave">Send & save</button>
         </div>
     </div>
 

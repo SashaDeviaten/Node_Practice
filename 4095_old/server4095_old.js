@@ -5,7 +5,7 @@ const path = require('path');
 const {logLineAsync} = require("../utils/log");
 
 const webserver = express();
-const port = 4095;
+const port = 4094;
 // const dataFile = path.join(__dirname, '_data.json');
 
 webserver.use(express.static('public'));
