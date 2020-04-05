@@ -1,0 +1,26 @@
+body {
+  margin: 0;
+}
+
+div#container {
+  height: 100vh;
+  display: flex;
+  width: 100%;
+
+  h2 {
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.requestSection {
+  flex: 0 0 40%;
+}
+
+.listSection {
+  flex: 0 0 20%;
+}
+
+.responseSection {
+  flex: 0 0 40%;
+}

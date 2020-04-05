@@ -1,0 +1,23 @@
+.request {
+  background-color: cornsilk;
+  height: 100vh;
+  padding: 16px;
+}
+
+.urlWrap {
+  margin-bottom: 16px;
+  display: flex;
+
+  input {
+    border-radius: 0 4px 4px 0;
+  }
+
+  .methodSelect {
+    flex: 0 0 20%;
+    height: 30px;
+    border-radius: 4px 0 0 4px;
+    border-bottom: none;
+    border-left: none;
+    border-top: none;
+  }
+}

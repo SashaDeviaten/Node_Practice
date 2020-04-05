@@ -1,0 +1,14 @@
+input.input {
+  border: none;
+  width: calc(100% - 10px);
+  height: 20px;
+  padding: 5px;
+  border-radius: 4px;
+  &::placeholder {
+    color: darkgray;
+  }
+}
+
+.label {
+  font-size: 14px;
+}
