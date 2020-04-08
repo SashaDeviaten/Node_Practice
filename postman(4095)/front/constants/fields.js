@@ -1,3 +1,9 @@
 export const NAME = 'name';
 export const METHOD = 'method';
 export const URL = 'URL';
+export const PARAMS = 'params';
+export const HEADERS = 'headers';
+export const DATA_TYPE = 'dataType';
+export const ROW = 'row';
+export const FORM_DATA = 'form-data';
+export const ENC = 'x-www-form-urlencoded';

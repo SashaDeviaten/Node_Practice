@@ -2,6 +2,15 @@
   background-color: cornsilk;
   height: 100vh;
   padding: 16px;
+
+
+  .row {
+    display: flex;
+    margin-bottom: 8px;
+    input {
+      margin-right: 8px;
+    }
+  }
 }
 
 .urlWrap {
@@ -19,5 +28,12 @@
     border-bottom: none;
     border-left: none;
     border-top: none;
+  }
+}
+
+button.groupButton {
+  display: inline-block;
+  &.selectedBtnG {
+    background-color: gray;
   }
 }
