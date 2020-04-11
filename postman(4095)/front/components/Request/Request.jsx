@@ -29,6 +29,14 @@ const Request = props => {
         rebuild()
     }, []);
 
+    const resetFieldError = e => {
+        const name = e.currentTarget.name;
+        if (get(errors, name)) {
+            set(errors, name, null)
+        }
+
+    };
+
     const setDataType = useCallback(e => {
         const field = e.currentTarget;
         set(form, field.name, field.value);
@@ -65,6 +73,7 @@ const Request = props => {
                         name={`${listAttr}[${i}].key`}
                         value={row.key}
                         onChange={setField}
+                        onFocus={resetFieldError}
                         error={get(errors, `${listAttr}[${i}].key`)}
                     />
                     <Control
@@ -72,6 +81,7 @@ const Request = props => {
                         name={`${listAttr}[${i}].value`}
                         value={row.value}
                         onChange={setField}
+                        onFocus={resetFieldError}
                         error={get(errors, `${listAttr}[${i}].value`)}
                     />
                     <Button
@@ -103,6 +113,7 @@ const Request = props => {
                     value={form[URL]}
                     onChange={setField}
                     error={errors[URL]}
+                    onFocus={resetFieldError}
                 />
             </div>
             <Control
@@ -112,6 +123,7 @@ const Request = props => {
                 onChange={setField}
                 value={form[NAME]}
                 error={errors[NAME]}
+                onFocus={resetFieldError}
             />
 
             <h4>Query Params</h4>
@@ -152,6 +164,7 @@ const Request = props => {
                     ? <Control
                         name={DATA}
                         onChange={setField}
+                        onFocus={resetFieldError}
                         value={form[DATA]}
                         control={<Textarea/>}
                         error={Array.isArray(errors[DATA]) ? null : errors[DATA]}

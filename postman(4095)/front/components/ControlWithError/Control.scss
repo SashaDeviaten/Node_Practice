@@ -18,11 +18,13 @@ div.errorWrap {
   }
 
   &.active {
-    input,textarea:not(:focus) {
-      background-color: #FFD7D7;
-      border-bottom: 1px solid red;
-      &:hover + div.error {
-        opacity: 1
+    input, textarea {
+      &:not(:focus) {
+        background-color: #FFD7D7;
+        border-bottom: 1px solid red;
+        &:hover + div.error {
+          opacity: 1
+        }
       }
     }
   }
