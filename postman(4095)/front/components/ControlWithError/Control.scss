@@ -1,0 +1,29 @@
+div.errorWrap {
+  position: relative;
+  width: 100%;
+  .error {
+    position: absolute;
+    opacity: 0;
+    background: red;
+    color: white;
+    padding: 3px;
+    border-radius: 4px;
+    transition: opacity 0.5s ease-in 0.3s;
+    bottom: 24px;
+    right: 6px;
+  }
+  textarea + div.error {
+    top: -16px;
+    bottom: auto;
+  }
+
+  &.active {
+    input,textarea:not(:focus) {
+      background-color: #FFD7D7;
+      border-bottom: 1px solid red;
+      &:hover + div.error {
+        opacity: 1
+      }
+    }
+  }
+}

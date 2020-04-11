@@ -7,6 +7,9 @@
   .row {
     display: flex;
     margin-bottom: 8px;
+    .errorWrap {
+      display: flex;
+    }
     input {
       margin-right: 8px;
     }
@@ -59,13 +62,6 @@ button.groupButton {
 
 .dataSection {
   margin-bottom: 16px;
-  textarea {
-    border: none;
-    width: calc(100% - 10px);
-    min-height: 60px;
-    padding: 5px;
-    border-radius: 4px;
-  }
 }
 
 .actions {

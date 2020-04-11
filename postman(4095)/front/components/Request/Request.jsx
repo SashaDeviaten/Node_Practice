@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import {DATA, DATA_TYPE, ENC, FORM_DATA, HEADERS, METHOD, NAME, PARAMS, ROW, URL} from "../../constants/fields";
 import {METHODS} from "../../constants/methods";
 import {initListItem, requestInitForm} from "../../constants/forms";
-import {set} from "../../utils/lodash";
+import {get, set} from "../../utils/lodash";
 
 import Button from "../../primitives/Button/Button.jsx";
-import InputE from "../InputWithError/InputE.jsx";
+import Control from "../ControlWithError/Control.jsx";
+import Textarea from "../../primitives/Textarea/Textarea.jsx";
 
 import './Request.scss';
 import {validateRequest} from "../../../validation";
@@ -59,14 +60,14 @@ const Request = props => {
     const buildList = (listAttr) => (
         form[listAttr].map((row, i) => (
                 <div className={'row'} key={i}>
-                    <InputE
+                    <Control
                         placeholder={'Key'}
                         name={`${listAttr}[${i}].key`}
                         value={row.key}
                         onChange={setField}
                         error={get(errors, `${listAttr}[${i}].key`)}
                     />
-                    <InputE
+                    <Control
                         placeholder={'Value'}
                         name={`${listAttr}[${i}].value`}
                         value={row.value}
@@ -96,7 +97,7 @@ const Request = props => {
                 >
                     {options}
                 </select>
-                <InputE
+                <Control
                     placeholder={URL}
                     name={URL}
                     value={form[URL]}
@@ -104,7 +105,7 @@ const Request = props => {
                     error={errors[URL]}
                 />
             </div>
-            <InputE
+            <Control
                 label={'Name'}
                 placeholder={'Request name'}
                 name={NAME}
@@ -148,10 +149,12 @@ const Request = props => {
             <div className={'dataSection'}>
             {
                 form[DATA_TYPE] === ROW
-                    ? <textarea
+                    ? <Control
                         name={DATA}
                         onChange={setField}
                         value={form[DATA]}
+                        control={<Textarea/>}
+                        error={Array.isArray(errors[DATA]) ? null : errors[DATA]}
                     />
                     : <div>
                         {buildList(DATA, form[DATA_TYPE])}
