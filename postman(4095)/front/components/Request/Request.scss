@@ -31,9 +31,51 @@
   }
 }
 
+.section {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
 button.groupButton {
   display: inline-block;
+  border: none;
+  height: 30px;
+  padding: 0 8px;
+  border-right: 1px solid grey;
+  &:focus {
+    outline: none;
+  }
+  &:first-child {
+    border-radius: 4px 0 0 4px;
+  }
+  &:last-child {
+    border-radius: 0 4px 4px 0;
+    border-right: none;
+  }
   &.selectedBtnG {
-    background-color: gray;
+    background-color: darkgray;
+  }
+}
+
+.dataSection {
+  margin-bottom: 16px;
+  textarea {
+    border: none;
+    width: calc(100% - 10px);
+    min-height: 60px;
+    padding: 5px;
+    border-radius: 4px;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    height: 30px;
+    padding: 0 10px;
+    margin-left: 8px;
+    border-radius: 4px;
+
   }
 }

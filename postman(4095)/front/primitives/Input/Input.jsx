@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 
 import './Input.scss';
 
-const Input = ({label, className, ...props}) => {
+const Input = ({label, className, autoComplete = 'off', ...props}) => {
 
 
     return (
@@ -14,7 +14,8 @@ const Input = ({label, className, ...props}) => {
             )}
             <input
                 {...props}
-                className={`input ${className}`}
+                className={`input ${className || ''}`}
+                autoComplete={autoComplete}
             />
 
         </Fragment>

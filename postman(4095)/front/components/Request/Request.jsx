@@ -1,14 +1,16 @@
 import React, {useState, useCallback} from 'react';
 import PropTypes from 'prop-types'
 
-import {DATA_TYPE, ENC, FORM_DATA, METHOD, NAME, PARAMS, ROW, URL} from "../../constants/fields";
+import {DATA, DATA_TYPE, ENC, FORM_DATA, HEADERS, METHOD, NAME, PARAMS, ROW, URL} from "../../constants/fields";
 import {METHODS} from "../../constants/methods";
+import {initListItem, requestInitForm} from "../../constants/forms";
 import {set} from "../../utils/lodash";
 
-import Input from "../../primitives/Input/Input.jsx";
 import Button from "../../primitives/Button/Button.jsx";
+import InputE from "../InputWithError/InputE.jsx";
 
 import './Request.scss';
+import {validateRequest} from "../../../validation";
 
 const options = METHODS.map(method => <option key={method} value={method}>{method}</option>);
 const dataTypes = [FORM_DATA, ENC, ROW];
@@ -16,42 +18,60 @@ const dataTypes = [FORM_DATA, ENC, ROW];
 const Request = props => {
 
     const [form, setForm] = useState(props.data);
+    const [errors, setErrors] = useState({});
+
+    const rebuild = () => setForm({...form});
 
     const setField = useCallback(e => {
         const field = e.currentTarget;
         set(form, field.name, field.value);
-        console.log('form', form);
+        rebuild()
+    }, []);
+
+    const setDataType = useCallback(e => {
+        const field = e.currentTarget;
+        set(form, field.name, field.value);
+        form[DATA] = field.value === ROW ? '' : [];
+        rebuild()
     }, []);
 
     const addRow = e => {
         const name = e.currentTarget.name;
-        form[name].push({
-            key: '',
-            value: ''
-        });
-        setForm({...form})
+        form[name].push({...initListItem});
+        rebuild()
     };
 
     const deleteRow = e => {
         const button = e.currentTarget;
         form[button.name].splice(button.id, 1);
-        setForm({...form})
+        rebuild()
     };
 
-    const buildList = listAttr => (
+    const resetForm = () => {
+        setForm({...requestInitForm})
+    };
+
+    const saveForm = () => {
+        const errors = validateRequest(form);
+        setErrors(errors)
+    };
+
+    const buildList = (listAttr) => (
         form[listAttr].map((row, i) => (
                 <div className={'row'} key={i}>
-                    <Input
+                    <InputE
                         placeholder={'Key'}
                         name={`${listAttr}[${i}].key`}
-                        defaultValue={row.key}
-                        onBlur={setField}
+                        value={row.key}
+                        onChange={setField}
+                        error={get(errors, `${listAttr}[${i}].key`)}
                     />
-                    <Input
+                    <InputE
                         placeholder={'Value'}
                         name={`${listAttr}[${i}].value`}
-                        defaultValue={row.value}
-                        onBlur={setField}
+                        value={row.value}
+                        onChange={setField}
+                        error={get(errors, `${listAttr}[${i}].value`)}
                     />
                     <Button
                         className={'trash'}
@@ -71,24 +91,26 @@ const Request = props => {
                 <select
                     name={METHOD}
                     className={'methodSelect'}
-                    onSelect={setField}
-                    defaultValue={form[METHOD]}
+                    onChange={setField}
+                    value={form[METHOD]}
                 >
                     {options}
                 </select>
-                <Input
+                <InputE
                     placeholder={URL}
                     name={URL}
-                    defaultValue={form[URL]}
-                    onBlur={setField}
+                    value={form[URL]}
+                    onChange={setField}
+                    error={errors[URL]}
                 />
             </div>
-            <Input
+            <InputE
                 label={'Name'}
                 placeholder={'Request name'}
                 name={NAME}
-                onBlur={setField}
-                defaultValue={form[NAME]}
+                onChange={setField}
+                value={form[NAME]}
+                error={errors[NAME]}
             />
 
             <h4>Query Params</h4>
@@ -101,10 +123,10 @@ const Request = props => {
             </Button>
 
             <h4>Headers</h4>
-            {buildList(PARAMS)}
+            {buildList(HEADERS)}
             <Button
                 onClick={addRow}
-                name={PARAMS}
+                name={HEADERS}
             >
                 Add header
             </Button>
@@ -113,13 +135,46 @@ const Request = props => {
                 {dataTypes.map(type => (
                     <Button
                         key={type}
-                        name={type}
+                        name={DATA_TYPE}
                         className={`groupButton ${form[DATA_TYPE] === type ? 'selectedBtnG' : ''}`}
+                        onClick={setDataType}
+                        value={type}
                     >
                         {type}
                     </Button>
                 ))}
+            </div>
 
+            <div className={'dataSection'}>
+            {
+                form[DATA_TYPE] === ROW
+                    ? <textarea
+                        name={DATA}
+                        onChange={setField}
+                        value={form[DATA]}
+                    />
+                    : <div>
+                        {buildList(DATA, form[DATA_TYPE])}
+                        <Button
+                            onClick={addRow}
+                            name={DATA}
+                        >
+                            Add data
+                        </Button>
+                </div>
+            }
+            </div>
+
+            <div className={'actions'}>
+                <Button onClick={resetForm}>
+                    Reset
+                </Button>
+                <Button onClick={saveForm}>
+                    Save
+                </Button>
+                <Button>
+                    Send
+                </Button>
             </div>
 
         </div>

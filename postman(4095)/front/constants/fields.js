@@ -7,3 +7,4 @@ export const DATA_TYPE = 'dataType';
 export const ROW = 'row';
 export const FORM_DATA = 'form-data';
 export const ENC = 'x-www-form-urlencoded';
+export const DATA = 'data';

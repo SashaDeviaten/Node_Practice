@@ -10,7 +10,7 @@ import './App.scss';
 
 const App = () => {
 
-    const [data, setData] = useState(requestInitForm);
+    const [data, setData] = useState({...requestInitForm});
 
     return (
         <Fragment>
