@@ -6,7 +6,7 @@ const FormData  = require('form-data');
 
 
 const {validateRequest} = require("../validation");
-const {logLineAsync, logLineSync} = require("../../utils/log");
+const {logLineAsync} = require("../../utils/log");
 
 const webserver = express();
 const port = 4095;
@@ -24,40 +24,32 @@ webserver.post('/send', async (req, res) => {
 
     const {errors, valid} = validateRequest(form);
 
-/*    {
-        "method"
-    :
-        "GET", "URL"
-    :
-        "https://www.bps-sberbank.by/rates/rates.json", "name"
-    :
-        "a", "params"
-    :
-        [], "headers"
-    :
-        [], "dataType"
-    :
-        "form-data", "data"
-    :
-        []
-    }*/
-
     if (valid) {
         let body = '';
-        if (req.body.dataType === 'application/x-www-form-urlencoded'){
-            // req.body.body.forEach((item, index) => {
-            //     body += `${index !== 0 ? '&' : ''}${item.key}=${encodeURIComponent(item.value)}`
-            // })
+
+        switch (req.body.dataType) {
+            case 'application/x-www-form-urlencoded': {
+                req.body.body.forEach((item, index) => {
+                    body += `${index !== 0 ? '&' : ''}${item.key}=${encodeURIComponent(item.value)}`
+                });
+                break;
+            }
+            case 'multipart/form-data': {
+                body = new FormData();
+                req.body.data.forEach(item => {
+                    body.append(item.key, item.value)
+                });
+                break;
+            }
+            case 'raw': {
+                body = req.body.data;
+                break;
+            }
+
+            default:
+                body = req.body.data;
         }
-        else if (req.body.dataType === 'multipart/form-data'){
-            body = new FormData();
-            req.body.data.forEach(item => {
-                body.append(item.key, item.value)
-            })
-        }
-        else if (req.body.dataType === 'raw'){
-            body = req.body.data;
-        }
+
 
         let {URL} = req.body;
         const { headers, method, params} = req.body;
