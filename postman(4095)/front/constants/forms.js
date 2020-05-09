@@ -7,8 +7,8 @@ export const initListItem = {
 
 export const requestInitForm = {
     [METHOD]: "GET",
-    [URL]: "",
-    [NAME]: '',
+    [URL]: "https://www.bps-sberbank.by/rates/rates.json",
+    [NAME]: 'qqq',
     [PARAMS]: [],
     [HEADERS]: [],
     [DATA_TYPE]: FORM_DATA,

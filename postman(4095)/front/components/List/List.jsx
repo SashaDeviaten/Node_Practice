@@ -10,23 +10,10 @@ import './List.scss';
 
 const List = props => {
 
-    const formDataRef = useRef();
-    const formData = formDataRef.current;
-
-    useEffect(() => {
-        formDataRef.current = {...props.data};
-    }, [props.data]);
-
-    const setField = useCallback(e => {
-        const field = e.currentTarget;
-        formData[field.name] = field.value;
-    }, []);
-
 
     return (
-        <div className={`${props.className} form`}>
-            <h2>Request</h2>
-            <Input label={'Name'} placeholder={'Request name'} name={NAME} onBlur={setField}/>
+        <div className={`${props.className} list`}>
+            <h2>List</h2>
 
         </div>
 

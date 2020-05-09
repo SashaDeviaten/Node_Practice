@@ -1,27 +1,50 @@
 const E_REQ = 'Required';
 
-export function validateRequest(request) {
+function validateRequest(request) {
     const errors = {};
+    let valid = true;
 
     for (let field in request) {
         if (Array.isArray(request[field])) {
-            errors[field] = request[field].map(validateRequest);
+            errors[field] = request[field].map(item => {
+                const listItemError = {};
+                for (let listField in item) {
+                    if (!item[listField]) {
+                        if (valid)
+                            valid = false;
+                        listItemError[listField] = E_REQ
+                    }
+                }
+
+                return listItemError
+            });
         }
         else {
             if (request[field]) {
                 switch (field) {
                     case 'URL': {
                         if (!(/https?:\/\//).test(request[field])) {
-                            errors[field] = 'only absolute urls are supported'
+                            errors[field] = 'only absolute urls are supported';
+                            if (valid)
+                                valid = false;
+
                         }
                         break;
                     }
                 }
             }
-            else errors[field] = E_REQ
+            else {
+                if (valid)
+                    valid = false;
+                errors[field] = E_REQ
+            }
         }
     }
 
-    return errors
+    return {errors, valid}
 
 }
+
+module.exports={
+    validateRequest
+};

@@ -1,40 +1,79 @@
-import React, {useRef, useEffect, useCallback} from 'react';
+import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types'
 
-import {NAME} from "../../constants/fields";
-
-import Input from "../../primitives/Input/Input.jsx";
 
 import './Response.scss';
+import Button from "../../primitives/Button/Button.jsx";
+import Textarea from "../../primitives/Textarea/Textarea.jsx";
 
+const BODY = 'Body';
+const HEADERS = 'Headers';
 
-const Response = props => {
+const Response = ({data, className}) => {
+    const [answerType, setAnswerType] = useState(BODY);
 
-    const formDataRef = useRef();
-    const formData = formDataRef.current;
+    const buildRow = (label, text, key) => (
+        <div className={'resRow'} key={key}>
+            <div className={'resLabel'}>{label}</div>
+            <div className={'resText'}>{text}</div>
+        </div>
+    );
 
-    useEffect(() => {
-        formDataRef.current = {...props.data};
-    }, [props.data]);
+    const buildHeadersSection = headers => {
+        const rows = [];
+        for (let key in headers) {
+            let text = '';
+            headers[key].forEach((item, i) => text+= `${i ? '\n' : ''}${item}`);
+            rows.push(buildRow(key, text, key))
+        }
+         return (
+             <Fragment>
+                 {rows}
+             </Fragment>
+         )
+    };
 
-    const setField = useCallback(e => {
-        const field = e.currentTarget;
-        formData[field.name] = field.value;
-    }, []);
-
+    const handlerType = e => {
+        setAnswerType(e.currentTarget.value)
+    };
 
     return (
-        <div className={`${props.className} form`}>
-            <h2>Request</h2>
-            <Input label={'Name'} placeholder={'Request name'} name={NAME} onBlur={setField}/>
+        <div className={`${className} response`}>
+            <h2>Response</h2>
+            {data && (
+                <Fragment>
+                    {buildRow('Status', `${data.status} ${data.statusText}`)}
+                    <div className={'btnsWrap'}>
+                        <Button
+                            value={BODY}
+                            onClick={handlerType}
+                            className={`groupButton ${answerType === BODY ? 'selectedBtnG' : ''}`}
+                        >
+                            {BODY}
+                        </Button>
+                        <Button
+                            value={HEADERS}
+                            onClick={handlerType}
+                            className={`groupButton ${answerType === HEADERS ? 'selectedBtnG' : ''}`}
+                        >
+                            {HEADERS}
+                        </Button>
+                    </div>
+                    {
+                        answerType === BODY
+                            ? <Textarea className={'resBody'} defaultValue={data.response}/>
+                            : buildHeadersSection(data.headers)
+                    }
+                </Fragment>
 
+            )}
         </div>
-
     )
 };
 
 export default Response;
 
 Response.propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    data: PropTypes.object
 };

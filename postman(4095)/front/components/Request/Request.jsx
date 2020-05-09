@@ -61,8 +61,23 @@ const Request = props => {
     };
 
     const saveForm = () => {
-        const errors = validateRequest(form);
-        setErrors(errors)
+        const {errors, valid} = validateRequest(form);
+        if (valid) {
+            props.saveRequest(form);
+        }
+        else setErrors(errors)
+    };
+
+    const sendForm = async () => {
+        const {errors, valid} = validateRequest(form);
+        if (valid) {
+            const answer = await props.sendRequest(form);
+
+            if (answer.errorCode === 1) {
+                setErrors(answer.errors)
+            }
+        }
+        else setErrors(errors)
     };
 
     const buildList = (listAttr) => (
@@ -96,7 +111,7 @@ const Request = props => {
     );
 
     return (
-        <div className={`${props.className} request`}>
+        <div className={'request'}>
             <h2>Request</h2>
             <div className={'urlWrap'}>
                 <select
@@ -188,7 +203,7 @@ const Request = props => {
                 <Button onClick={saveForm}>
                     Save
                 </Button>
-                <Button>
+                <Button onClick={sendForm}>
                     Send
                 </Button>
             </div>
@@ -201,5 +216,6 @@ const Request = props => {
 export default Request;
 
 Request.propTypes = {
-    className: PropTypes.string
+    saveRequest: PropTypes.func,
+    sendRequest: PropTypes.func
 };

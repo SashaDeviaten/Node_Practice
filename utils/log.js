@@ -16,10 +16,11 @@ const logLineSync = (logLine, logDir = __dirname, lofFile = '_server.log') => {
     fs.closeSync(logFd);
 };
 
-function logLineAsync(logFilePath,logLine) {
+function logLineAsync(logLine, logDir = __dirname, lofFile = '_server.log') {
 
     return new Promise( (resolve,reject) => {
 
+        const logFilePath = path.join(logDir, lofFile);
         const logDT=new Date();
         let time=logDT.toLocaleDateString()+" "+logDT.toLocaleTimeString();
         let fullLogLine=time+" "+logLine;

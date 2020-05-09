@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 
 import {requestInitForm} from "../../constants/forms";
 
@@ -7,23 +7,57 @@ import List from "../List/List.jsx";
 import Response from "../Response/Response.jsx";
 
 import './App.scss';
+import {getListApi, saveApi, sendApi} from "../../api/api";
 
 const App = () => {
 
-    const [data, setData] = useState({...requestInitForm});
+    const [reqData, setReqData] = useState({...requestInitForm});
+    const [listData, setListData] = useState([]);
+    const [resData, setResData] = useState(null);
+
+    const setList = async () => {
+        const list = await getListApi();
+        setListData(list);
+    };
+
+    const saveReq = form => {
+        saveApi(form);
+        listData.push(form);
+        setListData(listData)
+    };
+
+    const sendRequest = async form => {
+        const answer = await sendApi(form);
+
+        if (answer.errorCode === 0) {
+            setResData(answer.result)
+        }
+
+
+        return answer
+    };
+
+    // useEffect(() => setList(), []);
 
     return (
         <Fragment>
-            <List
-                className={'listSection'}
-            />
-            <Request
-                className={'requestSection'}
-                data={data}
-            />
-            <Response
-                className={'responseSection'}
-            />
+            <div className={'listSection'}>
+                <List
+                    data={listData}
+                />
+            </div>
+            <div className={'requestSection'}>
+                <Request
+                    data={reqData}
+                    saveRequest={saveReq}
+                    sendRequest={sendRequest}
+                />
+            </div>
+            <div className={'responseSection'}>
+                <Response
+                    data={resData}
+                />
+            </div>
         </Fragment>
 
     )

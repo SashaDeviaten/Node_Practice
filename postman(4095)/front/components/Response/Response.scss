@@ -1,4 +1,29 @@
-.form {
-  height: 100vh;
+.response {
+  background-color: aquamarine;
   padding: 16px;
+  height: calc(100vh - 32px);
+
+  .btnsWrap {
+    margin: 16px 0;
+  }
+
+  .resBody {
+    height: 70%;
+  }
+}
+
+.resRow {
+  width: 100%;
+  display: flex;
+  margin-bottom: 12px;
+
+  .resLabel {
+    font-weight: bold;
+    font-size: 14px;
+    width: 100px
+  }
+
+  .resText {
+
+  }
 }
