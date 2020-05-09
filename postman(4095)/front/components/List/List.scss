@@ -1,2 +1,16 @@
-.form {
+.listContainer {
+  height: calc(100vh - 16px);
+  background-color: khaki;
+  padding-top: 16px;
+}
+
+.listItem {
+  background: white;
+  padding: 8px;
+  border-bottom: 1px solid;
+  border-top: 1px solid;
+
+  .listIcon {
+    display: inline-block;
+  }
 }

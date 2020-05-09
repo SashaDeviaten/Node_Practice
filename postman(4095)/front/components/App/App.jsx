@@ -21,9 +21,8 @@ const App = () => {
     };
 
     const saveReq = form => {
-        saveApi(form);
-        listData.push(form);
-        setListData(listData)
+        // saveApi(form);
+        setListData([...listData, form])
     };
 
     const sendRequest = async form => {

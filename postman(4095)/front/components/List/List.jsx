@@ -10,11 +10,19 @@ import './List.scss';
 
 const List = props => {
 
-
     return (
-        <div className={`${props.className} list`}>
+        <div className={'listContainer'}>
             <h2>List</h2>
-
+            <div className={'listWrap'}>
+                {props.data.map(req => (
+                    <div className={'listItem'} key={req.URL}>
+                        <div className={'listIcon'}>
+                            {req.method}
+                        </div>
+                        {req.name}
+                    </div>
+                ))}
+            </div>
         </div>
 
     )
@@ -23,5 +31,5 @@ const List = props => {
 export default List;
 
 List.propTypes = {
-    className: PropTypes.string
+    data: PropTypes.array
 };
